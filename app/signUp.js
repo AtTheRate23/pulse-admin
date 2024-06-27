@@ -9,11 +9,15 @@ import { Fontisto } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/authContext'
+import axios from 'axios'
 
 const SignUp = () => {
   const [valid, setValid] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [image, setImage] = useState(null)
+  const [uploading, setUploading] = useState(false)
   const [passwordMatched, setPasswordMatched] = useState(false)
+  const [error, setError] = useState(null)
 
   const { register } = useAuth();
 
@@ -31,8 +35,6 @@ const SignUp = () => {
     confirmPassword: '',
     profilePic: '',
   })
-
-  console.log('formData', formData)
 
   const router = useRouter();
 
@@ -70,54 +72,75 @@ const SignUp = () => {
     }
   }
 
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-      aspect: [1, 1],
+  // const lounchCamera = async () => {
+  //   let result = await ImagePicker.launchCameraAsync({
+  //     allowsEditing: true,
+  //     quality: 1,
+  //     aspect: [1, 1],
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //   });
+  //   if (!result.canceled) {
+  //     // console.log(result)
+  //     const fileData = new FormData()
+  //     fileData.append('file', {
+  //       uri: result.assets[0].uri,
+  //       type: result.assets[0].type,
+  //       name: result.assets[0].fileName
+  //     });
+  //   }
+  // }
+
+  const chooseImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     });
 
-    if (!result.canceled) {
-      // console.log(result)
-      const fileData = new FormData()
-      fileData.append('file', {
-        uri: result.assets[0].uri,
-        type: result.assets[0].type,
-        name: result.assets[0].fileName
-      });
-
-      fileData.append('upload_preset', 'agihzmv9')
-
-      console.log('fileData', fileData)
-      try {
-        const res = await fetch('https://api.cloudinary.com/v1_1/reactcloudinary/image/upload', {
-          method: 'POST',
-          body: fileData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        const data = await res.json();
-
-        if (data.secure_url) {
-          setLoading(false);
-          setFormData({
-            ...formData,
-            profilePic: data.secure_url,
-          });
-        } else {
-          // Handle error
-          console.error('Failed to upload image to Cloudinary');
-        }
-      } catch (error) {
-        // Handle error
-        console.error('Error uploading image:', error);
-      }
-
+    if (!pickerResult.canceled) {
+      const source = { uri: pickerResult.uri };
+      setImage(source);
+      uploadImage(pickerResult);
     } else {
       alert('You did not select any image.');
+    }
+  };
+
+  const uploadImage = async (photo) => {
+    setUploading(true);
+    setError(null);
+    const data = new FormData();
+    data.append('file', {
+      uri: photo.assets[0].uri,
+      type: photo.assets[0].mimeType, // Or photo.type if available
+      name: photo.assets[0].fileName, // Or photo.fileName if available
+    });
+    data.append('upload_preset', 'akeunx8f'); // replace with your upload preset
+
+    try {
+      const res = await fetch('https://api.cloudinary.com/v1_1/reactcloudinary/image/upload', {
+        method: 'POST',
+        body: data,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      const data = await res.json();
+      console.log("uploaded image", data)
+      setFormData({ ...formData, profilePic: data.secure_url })
+      setUploading(false);
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      setError(err);
+      setUploading(false);
     }
   };
 
@@ -222,7 +245,7 @@ const SignUp = () => {
             <View className="h-[50px] flex-row gap-2 bg-purple-300 items-center p-4 rounded-xl">
               <Entypo name="image" size={24} color="black" />
               <TouchableOpacity
-                onPress={pickImageAsync}
+                onPress={chooseImage}
               >
                 <Text className="text-black text-[16px]">Pick Profile Pic</Text>
               </TouchableOpacity>

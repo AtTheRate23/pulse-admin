@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import * as Network from 'expo-network'
 
 export const AuthContext = createContext();
 
@@ -21,15 +22,22 @@ export const AuthContextProvider = ({ children }) => {
                 setIsAuthenticated(false)
             }
         })
+        // checkNetworkStatus()
         return unsub;
     }, [])
+
+    const checkNetworkStatus = async () => {
+        const networkState = await Network.getNetworkStateAsync();
+        console.log('Network state:', networkState);
+    };
+
 
     const updateUserData = async (uid) => {
         try {
             const userRef = doc(db, 'users', uid)
             const userDoc = await getDoc(userRef)
             if (userDoc.exists()) {
-                let data  = userDoc.data();
+                let data = userDoc.data();
                 setUser({
                     ...userDoc,
                     username: data.username,
