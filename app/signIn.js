@@ -54,7 +54,7 @@ const SignIn = () => {
                 const response = await login(formData.email, formData.password)
                 setLoading(false)
                 if (!response.success) {
-                    alert("Sign in", response.msg)
+                    alert("Error Occured during Sign-in", response.msg)
                 }
             }
         } catch (error) {
@@ -81,7 +81,7 @@ const SignIn = () => {
                             />
                             <Text className='text-center -mt-4 pb-3 text-[20px] text-white'>Pulse</Text>
                         </View>
-                        <Text className='text-center pb-4 text-[16px] text-white'>❤️Stay Connected With Your Loved One's❤️</Text>
+                        <Text className='text-center pb-4 text-[16px] text-white'>❤️ Stay Connected With Your Loved One's ❤️</Text>
                     </View>
                     <View className="body-container flex justify-center items-center mt-5">
                         <Text className="text-[25px] tracking-wider text-black font-bold">Sign In</Text>
@@ -116,18 +116,20 @@ const SignIn = () => {
                     </View>
 
                     {/* button for signIn */}
-                    <View className="bg-[#38bdf8] w-[90%] h-[50px] rounded-md flex justify-center items-center self-center">
-                        {
-                            loading ? (
-                                <ActivityIndicator size={'large'} />
-                            ) : (
-                                <TouchableOpacity
-                                    onPress={() => setLoading(true)}
-                                >
-                                    <Text className="text-white text-[18px] font-bold rounded-xl">Sign In</Text>
-                                </TouchableOpacity>)
-                        }
-                    </View>
+                    <TouchableOpacity
+                        onPress={handleLogin}
+                    >
+                        <View className="bg-[#38bdf8] w-[90%] h-[50px] rounded-md flex justify-center items-center self-center">
+                            {
+                                loading ? (
+                                    <ActivityIndicator size={'large'} />
+                                ) : (
+                                    <View>
+                                        <Text className="text-white text-[18px] font-bold rounded-xl">Sign In</Text>
+                                    </View>)
+                            }
+                        </View>
+                    </TouchableOpacity>
                     <View className="flex flex-row justify-center items-center mt-2">
                         <Text className="text-black font-semibold">Don't have a account ? {" "}</Text>
                         <TouchableOpacity

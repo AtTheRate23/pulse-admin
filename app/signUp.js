@@ -9,7 +9,6 @@ import { Fontisto } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/authContext'
-import axios from 'axios'
 
 const SignUp = () => {
   const [valid, setValid] = useState(false)
@@ -37,6 +36,8 @@ const SignUp = () => {
   })
 
   const router = useRouter();
+
+  console.log("formData", formData);
 
   const handleInputChane = (value, name) => {
     setFormData({
@@ -101,7 +102,7 @@ const SignUp = () => {
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -123,7 +124,7 @@ const SignUp = () => {
       type: photo.assets[0].mimeType, // Or photo.type if available
       name: photo.assets[0].fileName, // Or photo.fileName if available
     });
-    data.append('upload_preset', 'akeunx8f'); // replace with your upload preset
+    data.append('upload_preset', 'agihzmv9'); // replace with your upload preset
 
     try {
       const res = await fetch('https://api.cloudinary.com/v1_1/reactcloudinary/image/upload', {
@@ -133,9 +134,14 @@ const SignUp = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      const data = await res.json();
-      console.log("uploaded image", data)
-      setFormData({ ...formData, profilePic: data.secure_url })
+      const responseData = await res.json();
+      if (res.ok) {
+        console.log("Uploaded image:", responseData);
+        setFormData({ ...formData, profilePic: responseData.secure_url })
+      } else {
+        console.error('Error uploading image:', responseData.error);
+        setError(responseData.error);
+      }
       setUploading(false);
     } catch (err) {
       console.error('Error uploading image:', err);
@@ -153,9 +159,9 @@ const SignUp = () => {
         let response = await register(username, email, password, profilePic);
         setLoading(false)
 
-        console.log('got results:', response)
+        console.log('got results:', response.msg)
         if (!response.success) {
-          alert('Sign up', response.msg)
+          alert('Sign up', response?.msg)
         } else {
           router.replace('signIn')
         }
@@ -184,7 +190,7 @@ const SignUp = () => {
               />
               <Text className='text-center -mt-4 pb-3 text-[20px] text-white'>Pulse</Text>
             </View>
-            <Text className='text-center pb-4 text-[16px] text-white'>❤️Stay Connected With Your Loved One's❤️</Text>
+            <Text className='text-center pb-4 text-[16px] text-white'>❤️ Stay Connected With Your Loved One's ❤️</Text>
           </View>
           <View className="body-container flex justify-center items-center mt-4">
             <Text className="text-[25px] tracking-wider text-black font-bold">Sign Up</Text>
@@ -242,29 +248,30 @@ const SignUp = () => {
             </View>
           </View>
           <View className="m-5 flex flex-row justify-between">
-            <View className="h-[50px] flex-row gap-2 bg-purple-300 items-center p-4 rounded-xl">
-              <Entypo name="image" size={24} color="black" />
-              <TouchableOpacity
-                onPress={chooseImage}
-              >
+            <TouchableOpacity
+              onPress={chooseImage}
+            >
+              <View className="h-[50px] flex-row gap-2 bg-purple-300 items-center p-4 rounded-xl">
+                <Entypo name="image" size={24} color="black" />
+
                 <Text className="text-black text-[16px]">Pick Profile Pic</Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
             <Image
               id='profilePic'
-              source={formData?.profilePic ? formData?.profilePic : require('../assets/images/person.png')}
-              className="w-[110px] h-[120px] -mt-7"
+              source={formData?.profilePic ? { uri: formData?.profilePic } : require('../assets/images/person.png')}
+              className="w-[120px] h-[120px] -mt-7 rounded-full"
             />
           </View>
 
           {/* button for signIn */}
-          <View className="bg-[#38bdf8] w-[90%] h-[50px] rounded-xl flex justify-center items-center self-center">
-            <TouchableOpacity
-              onPress={handleRegister}
-            >
+          <TouchableOpacity
+            onPress={handleRegister}
+          >
+            <View className="bg-[#38bdf8] w-[90%] h-[50px] rounded-xl flex justify-center items-center self-center">
               <Text className="text-white text-[18px]">Sign Up</Text>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
 
           <View className="flex-row self-center items-center mt-2">
             <Text className="text-black">Already have a account ? {" "}</Text>

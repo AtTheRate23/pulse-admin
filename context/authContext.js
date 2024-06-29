@@ -41,7 +41,7 @@ export const AuthContextProvider = ({ children }) => {
                 setUser({
                     ...userDoc,
                     username: data.username,
-                    profileURL: data.profileURL,
+                    profilePic: data.profilePic,
                     userId: data.userId,
                     email: data.email
                 })
@@ -86,7 +86,7 @@ export const AuthContextProvider = ({ children }) => {
             }
         }
     }
-    const register = async (email, password, username, profileURL) => {
+    const register = async (username, email, password, profilePic) => {
         try {
             // Register Logic
             const response = await createUserWithEmailAndPassword(auth, email, password)
@@ -94,7 +94,7 @@ export const AuthContextProvider = ({ children }) => {
 
             await setDoc(doc(db, "users", response?.user?.uid), {
                 username: username,
-                profileURL: profileURL,
+                profilePic: profilePic,
                 userId: response?.user?.uid,
                 email: response?.user?.email,
                 createdAt: Date.now()
