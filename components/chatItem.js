@@ -13,7 +13,7 @@ const ChatItem = ({ noBorder, router, item, index }) => {
             <View className={`flex-row justify-between mx-4 items-center gap-3 mb-4 pb-2 ${!noBorder ? 'border-b border-b-neutral-200' : ''}`}>
                 <Image
                     style={{ height: hp(6.5), width: hp(6), borderRadius: 100 }}
-                    source="https://res.cloudinary.com/reactcloudinary/image/upload/v1719607084/k1mf59wxm8kfx7vobcuf.png"
+                    source={item?.profilePic}
                     placeholder={blurhash}
                     transition={1000}
                 />

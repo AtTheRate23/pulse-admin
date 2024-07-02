@@ -24,7 +24,7 @@ const Home = () => {
     snapshot.forEach((doc) => {
       data.push({ ...doc.data() });
     });
-    console.log('got the users data', data);
+    // console.log('got the users data', data);
     setUsers(data);
   }
 

@@ -19,7 +19,7 @@ const ios = Platform.OS == 'ios';
 const HomeHeader = () => {
     const { top } = useSafeAreaInsets();
     const { user, logout } = useAuth();
-    console.log("user: ", user)
+    // console.log("user: ", user)
 
     const handleProfile = () => {
         console.log("Profile clicked")
