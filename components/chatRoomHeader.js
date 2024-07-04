@@ -21,7 +21,9 @@ const ChatRoomHeader = ({ user, router }) => {
                                 source={user?.profilePic}
                                 style={{ height: hp(4.5), borderRadius: 100, aspectRatio: 1 }}
                             />
-                            <Text style={{ fontSize: hp(2.5) }} className="text-neutral-700 font-medium">{user?.username}</Text>
+                            <Text style={{ fontSize: hp(2.5) }} className="text-neutral-700 font-medium">
+                                {user?.username.length > 15 ? `${user.username.slice(0, 15)}...` : user.username}
+                            </Text>
                         </View>
                     </View>
                 ),
