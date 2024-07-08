@@ -1,5 +1,5 @@
-import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, StyleSheet } from 'react-native'
+import React, { useMemo, useRef, useState } from 'react'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import { Fontisto } from '@expo/vector-icons';
@@ -8,12 +8,16 @@ import { StatusBar } from 'expo-status-bar';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Loading from '../components/loading';
 import { useAuth } from '../context/authContext';
+import BottomSheet from '@gorhom/bottom-sheet'
 
 const SignIn = () => {
     const [loading, setLoading] = useState(false);
     const [valid, setValid] = useState(false);
 
-    const { login } = useAuth()
+    const bottomSheetRef = useRef();
+
+    const { login } = useAuth();
+    const snapPoints = useMemo(() => ['25%', '50%', '70%'], []);
 
     const [borderColors, setBorderColors] = useState({
         email: 'black',
@@ -61,11 +65,14 @@ const SignIn = () => {
             throw new Error
         }
     }
+
+    const handleForgatPass = () => {
+        bottomSheetRef.current.expand();
+    }
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -200}
+            behavior={Platform.OS === "ios" ? "padding" : null}
         >
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -110,7 +117,7 @@ const SignIn = () => {
                     </View>
                     <View className="flex flex-row ml-5 mr-5 mb-4">
                         <Text className="text-black font-semibold">Forgot Password? {" "}</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleForgatPass}>
                             <Text className="text-blue-500 font-semibold">Click Here</Text>
                         </TouchableOpacity>
                     </View>
@@ -140,9 +147,8 @@ const SignIn = () => {
                     </View>
                 </View>
 
-
                 {/* social media icons container */}
-                <View className="bg-[#38bdf8] flex flex-end h-[120px] rounded-t-[110px] absolute bottom-0 w-full">
+                {/* <View className="bg-[#38bdf8] flex flex-end h-[120px] rounded-t-[110px] absolute bottom-0 w-full">
                     <Text className='text-center text-[16px] text-white pt-2'>Or Sign in With</Text>
                     <View className="flex flex-row mt-3 justify-center">
                         <View
@@ -176,10 +182,46 @@ const SignIn = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </View>
+                </View> */}
             </ScrollView >
-        </KeyboardAvoidingView >
+            {/* <View className="flex-1 absolute bottom-0 w-full">
+                <StatusBar style='light-content' />
+                <View className="flex-1 bg-[#38bdf8] h-[40px] flex-row justify-center items-center rounded-tl-3xl rounded-tr-3xl w-full">
+                    <Text className='text-center text-[16px] text-white'>©️ 2023 Pulse. All Rights Reserved.</Text>
+                </View>
+            </View> */}
+            {/* <View style={styles.container}> */}
+                <BottomSheet
+                    ref={bottomSheetRef}
+                    index={1}
+                    snapPoints={snapPoints}
+                    enablePanDownToClose={true}
+                    backgroundStyle={{ backgroundColor: '#ccfbf1' }}
+                >
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.containerHeadline}>Awesome Bottom Sheet 🎉</Text>
+                    </View>
+                </BottomSheet>
+            {/* </View> */}
+        </KeyboardAvoidingView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    contentContainer: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    containerHeadline: {
+        fontSize: 24,
+        fontWeight: '600',
+        padding: 20
+    }
+});
 
 export default SignIn

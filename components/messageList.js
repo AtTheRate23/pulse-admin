@@ -2,10 +2,11 @@ import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import MessageItem from './messageItem';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 const MessageList = ({ messages, currentUser, scrollViewRef }) => {
     return (
-        <ScrollView
+        <BottomSheetScrollView
             ref={scrollViewRef}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingTop: 10 }}
@@ -17,7 +18,7 @@ const MessageList = ({ messages, currentUser, scrollViewRef }) => {
                     )
                 })
             }
-        </ScrollView>
+        </BottomSheetScrollView>
     )
 }
 

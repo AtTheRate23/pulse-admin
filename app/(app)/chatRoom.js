@@ -1,5 +1,5 @@
 import { View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar';
 import ChatRoomHeader from '../../components/chatRoomHeader';
@@ -10,6 +10,9 @@ import { useAuth } from '../../context/authContext';
 import { getRoomId } from '../../utils/common';
 import { Timestamp, addDoc, collection, doc, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
+import { Image } from 'expo-image';
+
 
 const ChatRoom = () => {
   const item = useLocalSearchParams();
@@ -19,6 +22,8 @@ const ChatRoom = () => {
   const textRef = useRef('');
   const inputRef = useRef(null);
   const scrollViewRef = useRef(null);
+  const bottomSheetRef = useRef();
+  const snapPoints = useMemo(() => ['25%', '100%'], []);
 
   useEffect(() => {
     createChatRoomIfNotExists();
@@ -89,12 +94,37 @@ const ChatRoom = () => {
     }
   }
 
+  const handleHeaderClick = () => {
+    bottomSheetRef.current?.snapToIndex(0); // Adjust the snap point index as needed
+  };
+
   return (
-    <View className="flex-1 bg-white">
-      <StatusBar style='dark' />
-      <ChatRoomHeader user={item} router={router} />
-      {/* <View className="h-3 border-b border-neutral-300" /> */}
-      <View className="flex-1 justify-between bg-neutral-100 overflow-visible rounded-tl-[25px] rounded-tr-[25px] border border-b-2 border-neutral-300">
+    <>
+      <View className="flex-1 bg-neutral-200 border border-b-2 border-neutral-300 shadow-2xl">
+        <StatusBar style='light' />
+        <ChatRoomHeader user={item} router={router} handleHeaderClick={handleHeaderClick} />
+        {/* <View className="h-3 border-b border-neutral-300" /> */}
+        {/* users details and profile pic */}
+        <View
+          style={{
+            height: hp(80)
+          }}
+          className="flex-col items-center gap-3 mt-2 pb-2"
+        >
+          <Image
+            source={{ uri: item?.profilePic }}
+            style={{ height: hp(45), aspectRatio: 1, borderRadius: 30 }}
+          />
+
+
+        </View>
+      </View>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        backgroundStyle={{ backgroundColor: '#ccfbf1' }}
+      >
         <View className="flex-1">
           <MessageList messages={messages} currentUser={user} scrollViewRef={scrollViewRef} />
         </View>
@@ -125,8 +155,8 @@ const ChatRoom = () => {
             </View>
           </View>
         </View>
-      </View>
-    </View>
+      </BottomSheet>
+    </>
   )
 }
 

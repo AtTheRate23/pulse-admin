@@ -3,6 +3,8 @@ import { Slot, useRouter, useSegments } from 'expo-router'
 import '../global.css'
 import { AuthContextProvider, useAuth } from '../context/authContext'
 import { MenuProvider } from 'react-native-popup-menu';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 const MainLayout = () => {
     const { isAuthenticated } = useAuth();
@@ -25,11 +27,13 @@ const MainLayout = () => {
 
 const RootLayout = () => {
     return (
-        <MenuProvider>
-            <AuthContextProvider>
-                <MainLayout />
-            </AuthContextProvider>
-        </MenuProvider>
+        <GestureHandlerRootView>
+            <MenuProvider>
+                <AuthContextProvider>
+                    <MainLayout />
+                </AuthContextProvider>
+            </MenuProvider>
+        </GestureHandlerRootView>
     )
 }
 
