@@ -1,9 +1,7 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Stack } from 'expo-router'
-import HomeHeader from '../../components/homeHeader'
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
+import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import HomeHeader from '../../components/homeHeader';
 
 export default function _layout() {
     return (
@@ -16,7 +14,6 @@ export default function _layout() {
                         title: 'overview',
                         header: () => <HomeHeader />
                     }}
-                    
                 />
             </Drawer>
         </GestureHandlerRootView>
