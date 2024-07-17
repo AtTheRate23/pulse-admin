@@ -5,7 +5,6 @@ import { AuthContextProvider, useAuth } from '../context/authContext'
 import { MenuProvider } from 'react-native-popup-menu';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-
 const MainLayout = () => {
     const { isAuthenticated } = useAuth();
     const segments = useSegments();
@@ -22,7 +21,7 @@ const MainLayout = () => {
         }
     }, [isAuthenticated])
 
-    return <Slot />
+    return <Slot/>
 }
 
 const RootLayout = () => {

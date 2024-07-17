@@ -4,11 +4,12 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null)
-    const [isAuthenticated, setIsAuthenticated] = useState(undefined)
+    const [isAuthenticated, setIsAuthenticated] = useState(true)
+    const apiEndpoint = process.env.EXPO_PUBLIC_API_ENDPOINT;
 
     const login = async (secretKey) => {
         try {
-            const response = await fetch("http://192.168.0.21:3000/admin/verify", {
+            const response = await fetch(`${apiEndpoint}/admin/verify`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ secretKey })
@@ -32,7 +33,7 @@ export const AuthContextProvider = ({ children }) => {
     };
     const logout = async () => {
         try {
-            const response = await fetch("http://192.168.0.21:3000/admin/logout");
+            const response = await fetch(`${apiEndpoint}/admin/logout`);
 
             if (!response.ok) {
                 const errorData = await response.json();
