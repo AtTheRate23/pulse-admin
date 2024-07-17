@@ -32,16 +32,22 @@ export const AuthContextProvider = ({ children }) => {
     };
     const logout = async () => {
         try {
-            return {
-                success: true,
-                message: 'You have been logged out'
+            const response = await fetch("http://192.168.0.21:3000/admin/logout");
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error Response: ", errorData);
+                return { success: false, message: errorData.message };
             }
+
+            const result = await response.json();
+            if (result.success) {
+                setIsAuthenticated(false);
+            }
+            return result;
         } catch (error) {
-            return {
-                success: false,
-                msg: error.message,
-                error: error
-            }
+            console.error("Network Error: ", error);
+            return { success: false, message: error.message };
         }
     }
     return (
