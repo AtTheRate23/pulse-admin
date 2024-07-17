@@ -1,8 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth, db } from "../firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import * as Network from 'expo-network'
 
 export const AuthContext = createContext();
 
@@ -10,73 +6,35 @@ export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [isAuthenticated, setIsAuthenticated] = useState(undefined)
 
-    useEffect(() => {
-        // OnAuth State Changed
-        const unsub = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUser(user)
-                setIsAuthenticated(true)
-                updateUserData(user?.uid)
-            } else {
-                setUser(null)
-                setIsAuthenticated(false)
-            }
-        })
-        // checkNetworkStatus()
-        return unsub;
-    }, [])
+    const login = async (secretKey) => {
+        try {
+            const response = await fetch("http://192.168.0.21:3000/admin/verify", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ secretKey })
+            });
 
-    const checkNetworkStatus = async () => {
-        const networkState = await Network.getNetworkStateAsync();
-        console.log('Network state:', networkState);
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error Response: ", errorData);
+                return { success: false, message: errorData.message };
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                setIsAuthenticated(true);
+            }
+            return result;
+        } catch (error) {
+            console.error("Network Error: ", error);
+            return { success: false, message: error.message };
+        }
     };
-
-
-    const updateUserData = async (uid) => {
-        try {
-            const userRef = doc(db, 'users', uid)
-            const userDoc = await getDoc(userRef)
-            if (userDoc.exists()) {
-                let data = userDoc.data();
-                setUser({
-                    ...userDoc,
-                    username: data.username,
-                    profilePic: data.profilePic,
-                    userId: data.userId,
-                    email: data.email
-                })
-            }
-        } catch (error) {
-            throw new Error
-        }
-    }
-
-    const login = async (email, password) => {
-        try {
-            // Login Logic
-            const response = await signInWithEmailAndPassword(auth, email, password)
-            return { success: true }
-        } catch (error) {
-            let msg = error.message
-            if (msg.includes("auth/invalid-email")) {
-                msg = "Invalid email"
-            }
-            if (msg.includes("auth/invalid-credential")) {
-                msg = "Invalid credential"
-            }
-            return { success: false, msg }
-        }
-    }
     const logout = async () => {
         try {
-            // Logout Logic
-            await signOut(auth)
             return {
                 success: true,
-                data: {
-                    user: null,
-                    isAuthenticated: false
-                }
+                message: 'You have been logged out'
             }
         } catch (error) {
             return {
@@ -86,31 +44,6 @@ export const AuthContextProvider = ({ children }) => {
             }
         }
     }
-    const register = async (username, email, password, profilePic) => {
-        try {
-            // Register Logic
-            const response = await createUserWithEmailAndPassword(auth, email, password)
-            console.log("register response:", response)
-
-            await setDoc(doc(db, "users", response?.user?.uid), {
-                username: username,
-                profilePic: profilePic,
-                userId: response?.user?.uid,
-                email: response?.user?.email,
-                createdAt: Date.now()
-            })
-            return { success: true, data: response?.user }
-        } catch (error) {
-            let msg = error.message
-            if (msg.includes("auth/email-already-in-use")) {
-                msg = "Email already in use"
-            } else if (msg.includes("auth/invalid-email")) {
-                msg = "Invalid email"
-            }
-            return { success: false, msg }
-        }
-    }
-
     return (
         <AuthContext.Provider
             value={{
@@ -118,7 +51,6 @@ export const AuthContextProvider = ({ children }) => {
                 isAuthenticated,
                 login,
                 logout,
-                register
             }}
         >
             {children}
