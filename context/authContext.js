@@ -3,8 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
-    const [isAuthenticated, setIsAuthenticated] = useState(true)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const apiEndpoint = process.env.EXPO_PUBLIC_API_ENDPOINT;
 
     const login = async (secretKey) => {
@@ -15,19 +14,19 @@ export const AuthContextProvider = ({ children }) => {
                 body: JSON.stringify({ secretKey })
             });
 
+            const result = await response.json();
+
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error("Error Response: ", errorData);
-                return { success: false, message: errorData.message };
+                return { success: false, message: result.message };
             }
 
-            const result = await response.json();
             if (result.success) {
                 setIsAuthenticated(true);
             }
             return result;
         } catch (error) {
-            console.error("Network Error: ", error);
+            console.log("Network Error: ", error);
             return { success: false, message: error.message };
         }
     };
@@ -54,7 +53,6 @@ export const AuthContextProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
-                user,
                 isAuthenticated,
                 login,
                 logout,

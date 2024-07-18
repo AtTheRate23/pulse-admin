@@ -11,8 +11,8 @@ export default function _layout() {
             <Drawer
                 drawerContent={(props) => <CustomDrawerContent {...props} />}
                 screenOptions={{
-                    drawerActiveBackgroundColor: '#5363df',
-                    drawerActiveTintColor: 'fff',
+                    // drawerActiveBackgroundColor: '#5363df',
+                    // drawerActiveTintColor: 'fff',
                     drawerLabelStyle: { marginLeft: -20 }
                 }}
             >

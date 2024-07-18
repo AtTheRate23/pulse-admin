@@ -11,7 +11,12 @@ const CustomDrawerContent = (props) => {
     const { logout } = useAuth();
 
     const handleLogout = async () => {
-        await logout();
+        const response = await logout();
+        if (response.ok) {
+            alert(response.message)
+        } else {
+            alert(response.message)
+        }
     }
     return (
         <View style={{ flex: 1 }}>
@@ -32,7 +37,7 @@ const CustomDrawerContent = (props) => {
                             width: 150,
                             height: 150,
                             borderRadius: 100,
-                            resizeMode: 'cover',
+                            contentFit: 'cover',
                             padding: 20
                         }}
                         source={{ uri: 'https://res.cloudinary.com/reactcloudinary/image/upload/v1719602485/p1aepzlkqusxhjmw9ejf.jpg' }}
@@ -45,32 +50,36 @@ const CustomDrawerContent = (props) => {
                 </View>
             </DrawerContentScrollView>
             {/* Footer area */}
-            <View
-                style={{
-                    padding: 20,
-                    paddingBottom: 20 + bottom
-                }}
-            >
-                {/* Logout button */}
-                <TouchableOpacity onPress={handleLogout}>
-                    <View className="flex-row self-end">
-                        <MaterialCommunityIcons name='logout'
-                            size={24}
-                            color='black'
-                        />
-                        <Text className="text-[16px] text-center font-bold">Logout</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View
-                style={{
-                    borderTopColor: '#dde3fe',
-                    borderTopWidth: 2,
-                    padding: 20,
-                    paddingBottom: 20 + bottom
-                }}
-            >
-                <Text className="text-2xl p-20">©️ 2023 Pulse. All rights reserved.</Text>
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                {/* Footer area */}
+                <View
+                    style={{
+                        padding: 20,
+                    }}
+                    className="self-end"
+                >
+                    {/* Logout button */}
+                    <TouchableOpacity onPress={handleLogout}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                            <MaterialCommunityIcons name='logout'
+                                size={24}
+                                color='black'
+                            />
+                            <Text className="text-[16px] text-center font-semibold">Logout</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        padding: 20,
+                        borderTopColor: '#dde3fe',
+                        borderTopWidth: 2,
+                        paddingBottom: 20 + bottom,
+                        alignItems: 'center'
+                    }}
+                >
+                    <Text className="text-[14px]">©️ 2023 Pulse. All rights reserved.</Text>
+                </View>
             </View>
         </View>
     )
