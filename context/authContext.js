@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(true)
     const apiEndpoint = process.env.EXPO_PUBLIC_API_ENDPOINT;
 
     const login = async (secretKey) => {

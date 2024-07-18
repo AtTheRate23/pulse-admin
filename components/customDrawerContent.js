@@ -50,15 +50,13 @@ const CustomDrawerContent = (props) => {
                 </View>
             </DrawerContentScrollView>
             {/* Footer area */}
-            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                {/* Footer area */}
+            <View style={{ justifyContent: 'flex-end' }}>
                 <View
                     style={{
                         padding: 20,
                     }}
                     className="self-end"
                 >
-                    {/* Logout button */}
                     <TouchableOpacity onPress={handleLogout}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             <MaterialCommunityIcons name='logout'
