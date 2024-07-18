@@ -20,7 +20,7 @@ const HomeHeader = () => {
     };
 
     return (
-        <View style={{ paddingTop: ios ? top : top + 10 }} className="flex-row px-5 pb-6 shadow h-[120px] bg-[#38bdf8] rounded-b-[20px] justify-between">
+        <View style={{ paddingTop: ios ? top : top + 10 }} className="flex-row px-5 pb-6 shadow h-[100px] bg-[#38bdf8] rounded-b-[20px] justify-between">
             <StatusBar style='dark' />
             <View className="flex-row justify-between items-center gap-2">
                 <Image

@@ -4,6 +4,7 @@ import '../global.css'
 import { AuthContextProvider, useAuth } from '../context/authContext'
 import { MenuProvider } from 'react-native-popup-menu';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Provider } from 'react-native-paper';
 
 const MainLayout = () => {
     const { isAuthenticated } = useAuth();
@@ -21,16 +22,18 @@ const MainLayout = () => {
         }
     }, [isAuthenticated])
 
-    return <Slot/>
+    return <Slot />
 }
 
 const RootLayout = () => {
     return (
         <GestureHandlerRootView>
             <MenuProvider>
-                <AuthContextProvider>
-                    <MainLayout />
-                </AuthContextProvider>
+                <Provider>
+                    <AuthContextProvider>
+                        <MainLayout />
+                    </AuthContextProvider>
+                </Provider>
             </MenuProvider>
         </GestureHandlerRootView>
     )

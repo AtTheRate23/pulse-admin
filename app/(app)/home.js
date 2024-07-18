@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit'
 import { Dimensions } from "react-native";
+import { Surface } from 'react-native-paper';
 
 
 const chartConfig = {
@@ -43,35 +44,9 @@ const Home = () => {
       <StatusBar style='dark' />
       <View style={styles.container}>
 
-        {/* Card */}
-        <View style={styles.card}>
-
-          {/* Header */}
-          <View >
-            <Text >
-              Messages
-            </Text>
-          </View>
-
-          {/* Content */}
-          <View>
-            {/* <LineChart
-              data={{
-                datasets: [
-                  {
-                    data: stats?.messagesChart,
-                    color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-                    strokeWidth: 2 // optional
-                  }
-                ],
-              }}
-              // width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-            /> */}
-            <Text style={{ marginBottom: 10, marginTop: 10 }}>Linear Chart</Text>
-          </View>
-        </View>
+        <Surface style={styles.surface} elevation={4}>
+          <Text>Surface</Text>
+        </Surface>
 
       </View>
     </ScrollView>
@@ -82,25 +57,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fff',
   },
-  card: {
+  surface: {
+    padding: 8,
+    height: 350,
+    width: '95%',
     marginTop: 15,
-    backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 16,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 14,
-    width: '97%',
-    // height: 350,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

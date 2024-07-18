@@ -17,7 +17,6 @@ export const AuthContextProvider = ({ children }) => {
             const result = await response.json();
 
             if (!response.ok) {
-                const errorData = await response.json();
                 return { success: false, message: result.message };
             }
 
