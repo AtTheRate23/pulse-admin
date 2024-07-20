@@ -7,6 +7,11 @@ import { useAuth } from '../context/authContext';
 const SignIn = () => {
     const [loading, setLoading] = useState(false);
     const [valid, setValid] = useState(false);
+    const [show, setShow] = useState(true);
+
+    const toggleShowPassword = () => {
+        setShow(!show);
+    }
 
     const { login } = useAuth();
 
@@ -90,7 +95,14 @@ const SignIn = () => {
                                 placeholderTextColor={'black'}
                                 onChangeText={value => handleInputChane(value, "secretKey")}
                                 className="flex-1 self-center font-semibold text-neutral-700"
-                                secureTextEntry={true}
+                                secureTextEntry={show}
+                            />
+                            <Feather
+                                name={show ? 'eye-off' : 'eye'}
+                                size={24}
+                                color="black"
+                                className="self-center pl-4 pr-4"
+                                onPress={toggleShowPassword}
                             />
                         </View>
                     </View>
