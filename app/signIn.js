@@ -1,13 +1,14 @@
 import { Feather } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/authContext';
 
 const SignIn = () => {
     const [loading, setLoading] = useState(false);
     const [valid, setValid] = useState(false);
     const [show, setShow] = useState(true);
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
 
     const toggleShowPassword = () => {
         setShow(!show);
@@ -63,10 +64,24 @@ const SignIn = () => {
         }
     }
 
+    React.useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardVisible(true);
+        });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardVisible(false);
+        });
+
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+        };
+    }, []);
+
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : null}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -124,12 +139,14 @@ const SignIn = () => {
                     </TouchableOpacity>
                 </View>
             </ScrollView >
-            <View className="flex-1 absolute bottom-0 w-full">
-                <StatusBar style='light-content' />
-                <View className="flex-1 bg-[#38bdf8] h-[40px] flex-row justify-center items-center rounded-tl-2xl rounded-tr-2xl w-full">
-                    <Text className='text-center text-[16px] text-black'>©️ 2023 Pulse. All Rights Reserved.</Text>
+            {!keyboardVisible && (
+                <View className="absolute bottom-0 w-full">
+                    <StatusBar style='light-content' />
+                    <View className="bg-[#38bdf8] h-[40px] flex-row justify-center items-center rounded-tl-2xl rounded-tr-2xl w-full">
+                        <Text className='text-center text-[16px] text-black'>©️ 2023 Pulse. All Rights Reserved.</Text>
+                    </View>
                 </View>
-            </View>
+            )}
         </KeyboardAvoidingView>
     )
 }

@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import DataTable, { COL_TYPES } from 'react-native-datatable-component';
-import { Image } from 'expo-image';
+import MessagesTabel from '../../components/messagesTable';
 
 const Messages = () => {
   const apiEndpoint = process.env.EXPO_PUBLIC_API_ENDPOINT
@@ -47,29 +46,10 @@ const Messages = () => {
   }
 
 
-  // Column Names
-  const colNames = ['_id', 'content'];
-
-  // Column Settings
-  const colSettings = [
-    { name: '_id', type: COL_TYPES.STRING, width: '20%' },
-    { name: 'content', type: COL_TYPES.STRING, width: '30%' },
-    // { name: 'createdAt', type: COL_TYPES.STRING, width: '20%' },
-    // { name: 'sender', type: COL_TYPES.STRING, width: '20%' },
-    // { name: 'groupChat', type: COL_TYPES.STRING, width: '10%' },
-  ];
-
   return (
-    <View style={styles.container}>
-      <DataTable
-        data={messages}
-        colNames={colNames}
-        colSettings={colSettings}
-        noOfPages={2}
-        backgroundColor={'rgba(113,113,87,0.2)'}
-        headerLabelStyle={{ color: 'black', fontSize: 12 }}
-      />
-    </View>
+    <ScrollView style={styles.container}>
+      <MessagesTabel messages={messages} />
+    </ScrollView>
   )
 }
 const styles = StyleSheet.create({

@@ -4,13 +4,12 @@ import '../global.css'
 import { AuthContextProvider, useAuth } from '../context/authContext'
 import { MenuProvider } from 'react-native-popup-menu';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Provider } from 'react-native-paper';
+import { Provider, DefaultTheme } from 'react-native-paper';
 
 const MainLayout = () => {
     const { isAuthenticated } = useAuth();
     const segments = useSegments();
     const router = useRouter();
-
 
     useEffect(() => {
         if (typeof isAuthenticated == 'undefined') return;
@@ -26,10 +25,17 @@ const MainLayout = () => {
 }
 
 const RootLayout = () => {
+    const theme = {
+        ...DefaultTheme,
+        colors: {
+            ...DefaultTheme.colors,
+            text: 'blue', // Change this to your desired font color
+        },
+    };
     return (
         <GestureHandlerRootView>
             <MenuProvider>
-                <Provider>
+                <Provider theme={theme}>
                     <AuthContextProvider>
                         <MainLayout />
                     </AuthContextProvider>

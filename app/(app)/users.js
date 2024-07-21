@@ -1,8 +1,6 @@
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Image } from 'expo-image';
-import DataTable, { COL_TYPES } from 'react-native-datatable-component';
-import CustomTable from '../../components/customTable';
+import UsersTable from '../../components/usersTable';
 
 const Users = () => {
   const apiEndpoint = process.env.EXPO_PUBLIC_API_ENDPOINT
@@ -47,12 +45,9 @@ const Users = () => {
     );
   }
 
-  // Column Names
-  const colNames = ['_id', 'avatar', 'name', 'username', 'friends', 'groups'];
-
   return (
     <ScrollView style={styles.container}>
-      <CustomTable data={users} columns={colNames} />
+      <UsersTable users={users}/>
     </ScrollView>
   )
 }
@@ -61,12 +56,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-  },
+  }
 });
 
 export default Users;
