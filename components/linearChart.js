@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { Surface } from 'react-native-paper';
 
 const chartConfig = {
     backgroundGradientFrom: "#1E2923",
@@ -17,7 +18,7 @@ const chartConfig = {
 const LinearChartStats = ({ messagesChart }) => {
     const screenWidth = Dimensions.get("window").width;
     return (
-        <View style={styles.container}>
+        <Surface style={styles.container}>
             <LineChart
                 data={{
                     labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
@@ -33,12 +34,11 @@ const LinearChartStats = ({ messagesChart }) => {
                 chartConfig={chartConfig}
                 bezier
                 style={{
-                    marginVertical: 8,
-                    borderRadius: 16
+                    borderRadius: 5
                 }}
             />
             <Text style={styles.title}>Total Messages</Text>
-        </View>
+        </Surface>
     )
 }
 
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#fff',
-        marginBottom: 20
+        marginBottom: 20,
+        borderRadius: 5
     },
     LinearStatsContainersurface: {
         flex: 1,
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop: 10
     }
 })

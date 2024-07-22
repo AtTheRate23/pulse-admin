@@ -25,7 +25,7 @@ const Home = () => {
   console.log("stats", stats)
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <StatusBar style='dark' />
       <View style={styles.container}>
         <CircularStats stats={stats} />
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#fff',
-    marginBottom: 20
+    // marginBottom: 20
   }
 });
 
