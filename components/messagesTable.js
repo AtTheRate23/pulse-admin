@@ -12,6 +12,47 @@ const MessagesTable = ({ messages }) => {
     // Calculate total pages
     const totalPages = Math.ceil(messages?.length / rowsPerPage);
 
+
+    // Function to render attachments
+    const renderAttachments = (attachments) => {
+        if (!attachments) return null;
+        return attachments?.map((attachment, index) => {
+            const fileType = attachment?.split('.').pop().toLowerCase();
+
+            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
+                return (
+                    <TouchableOpacity key={index} onPress={() => Linking.openURL(attachment)}>
+                        <Image source={{ uri: attachment }} style={styles.attachmentImage} />
+                    </TouchableOpacity>
+                );
+            } else if (['mp4', 'mov', 'avi'].includes(fileType)) {
+                return (
+                    <TouchableOpacity key={index} onPress={() => Linking.openURL(attachment)}>
+                        <Video
+                            source={{ uri: attachment }}
+                            style={styles.attachmentVideo}
+                            useNativeControls
+                            resizeMode="contain"
+                            isLooping
+                        />
+                    </TouchableOpacity>
+                );
+            } else if (['doc', 'docx', 'pdf'].includes(fileType)) {
+                return (
+                    <TouchableOpacity key={index} onPress={() => Linking.openURL(attachment)}>
+                        <FontAwesome5 name="file-alt" size={24} color="black" style={styles.attachmentIcon} />
+                    </TouchableOpacity>
+                );
+            } else {
+                return (
+                    <TouchableOpacity key={index} onPress={() => Linking.openURL(attachment)}>
+                        <Text style={styles.attachmentText}>Unknown file type</Text>
+                    </TouchableOpacity>
+                );
+            }
+        });
+    };
+
     // Get the data for the current page
     const getCurrentPageData = () => {
         const start = currentPage * rowsPerPage;
@@ -19,7 +60,7 @@ const MessagesTable = ({ messages }) => {
         return messages?.slice(start, end).map(message => [
             message._id,
             message.content,
-            message.attachments.length ? 'Yes' : 'No',
+            message.attachments ? renderAttachments(message.attachments) : 'No',
             (
                 <View style={styles.senderColumn}>
                     <Image source={{ uri: message.sender.avatar }} style={styles.avatar} />
@@ -91,8 +132,8 @@ const MessagesTable = ({ messages }) => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 5, backgroundColor: '#fff' },
-    header: { height: 50, backgroundColor: '#537791' },
-    text: { textAlign: 'center', fontWeight: '200' },
+    header: { height: 50, backgroundColor: '#22d3ee' },
+    text: { textAlign: 'center', fontWeight: '400' },
     dataWrapper: { marginTop: -1 },
     row: { height: 60, backgroundColor: '#E7E6E1' },
     senderColumn: { flexDirection: 'row', alignItems: 'center', padding: 10 },

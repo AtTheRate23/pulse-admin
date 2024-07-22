@@ -21,7 +21,7 @@ const ChatsTable = ({ chats }) => {
             (
                 <View key={index} style={styles.avatarGroup}>
                     {chat?.avatar?.map((avatar, idx) =>
-                        <Image key={idx} source={{ uri: avatar }} style={styles.avatar} />
+                        avatar ? <Image key={idx} source={{ uri: avatar }} style={styles.avatar} /> : null
                     )}
                 </View>
             ),
@@ -30,14 +30,14 @@ const ChatsTable = ({ chats }) => {
             (
                 <View key={index} style={styles.avatarGroup}>
                     {chat?.members?.map((item, idx) =>
-                        <Image key={idx} source={{ uri: item?.avatar }} style={styles.avatar} />
+                        item?.avatar ? <Image key={idx} source={{ uri: item?.avatar }} style={styles.avatar} /> : null
                     )}
                 </View>
             ),
             chat.totalMessages,
             (
                 <View key={index} style={styles.creatorColumn}>
-                    <Image source={{ uri: chat?.creator?.avatar }} style={styles.avatar} />
+                    {chat?.creator?.avatar ? <Image source={{ uri: chat?.creator?.avatar }} style={styles.avatar} /> : null}
                     <Text>{chat?.creator?.name}</Text>
                 </View>
             ),
@@ -103,13 +103,13 @@ const ChatsTable = ({ chats }) => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 5, backgroundColor: '#fff' },
-    header: { height: 50, backgroundColor: '#537791' },
-    text: { textAlign: 'center', fontWeight: '200' },
+    header: { height: 50, backgroundColor: '#22d3ee' },
+    text: { textAlign: 'center', fontWeight: '400' },
     dataWrapper: { marginTop: -1 },
     row: { height: 80, backgroundColor: '#E7E6E1' }, // Increased height for better visibility
-    creatorColumn: { flexDirection: 'row', justifyContent:'space-evenly', alignItems: 'center' },
+    creatorColumn: { flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' },
     avatar: { width: 40, height: 40, borderRadius: 20, marginRight: -20, marginBottom: -10 }, // Adjust margin for overlap
-    avatarGroup: { flexDirection: 'row', alignItems: 'center', position: 'relative' , marginLeft: 10},
+    avatarGroup: { flexDirection: 'row', alignItems: 'center', position: 'relative', marginLeft: 10 },
     pagination: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
     rowsPerPage: { fontSize: 12 },
     pageInfo: { marginHorizontal: 20, fontSize: 12 },

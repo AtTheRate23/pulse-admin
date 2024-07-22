@@ -89,8 +89,8 @@ const UsersTable = ({ users }) => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, padding: 5, backgroundColor: '#fff' },
-    header: { height: 50, backgroundColor: '#537791' },
-    text: { textAlign: 'center', fontWeight: '200' },
+    header: { height: 50, backgroundColor: '#22d3ee' },
+    text: { textAlign: 'center', fontWeight: '400' },
     dataWrapper: { marginTop: -1 },
     row: { height: 60, backgroundColor: '#E7E6E1' },
     senderColumn: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
