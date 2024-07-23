@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "pulse",
-    "slug": "pulse",
+    "name": "pulse-admin",
+    "slug": "pulse-admin",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -20,7 +20,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["INTERNET", "WRITE_EXTERNAL_STORAGE"]
+      "permissions": [
+        "INTERNET",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +35,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3d79a0b2-b0b4-4f66-af64-c50ede00faf8"
+      }
+    },
+    "owner": "aadi_devs"
   }
 }
