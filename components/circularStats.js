@@ -2,24 +2,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Surface } from 'react-native-paper';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import { PieChart } from 'react-native-svg-charts';
-import PieChartWithCenteredLabels from './pieChartsStats';
+import PieChartStats from './pieChartStats';
 
 const CircularStats = ({ stats }) => {
-    const data = [434, 35];
-
-    const randomColor = () => ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(0, 7);
-
-    const pieData = data
-        .filter((value) => value > 0)
-        .map((value, index) => ({
-            value,
-            svg: {
-                fill: randomColor(),
-                onPress: () => console.log('press', index),
-            },
-            key: `pie-${index}`,
-        }))
 
     return (
         <View style={styles.container}>
@@ -58,13 +43,7 @@ const CircularStats = ({ stats }) => {
                     </View>
                 </Surface>
             </View>
-            <View style={styles.circulatStatsContainer}>
-                <Surface style={styles.container}>
-                    {/* <PieChart style={{ height: 200 }} data={pieData} /> */}
-                    <PieChartWithCenteredLabels />
-                    <Text style={styles.chartTitle}>Total Groups and Users</Text>
-                </Surface>
-            </View>
+            <PieChartStats stats={stats} />
         </View>
     )
 }
@@ -76,7 +55,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#fff',
-        marginBottom: 10,
+        marginBottom: 5,
         borderRadius: 5
     },
     circulatStatsContainer: {
@@ -85,8 +64,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         marginTop: 10,
+        marginBottom: 15,
         width: '95%',
         gap: 10
+    },
+    pieChartStatsContainer: {
+        width: '95%',
+        height: 200,
+        marginTop: 10,
+        borderRadius: 5
     },
     circularStatsContainersurface: {
         flex: 1,

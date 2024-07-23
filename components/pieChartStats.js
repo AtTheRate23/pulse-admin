@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import { PieChart } from 'react-native-chart-kit';
 import { Surface } from 'react-native-paper';
 
 const chartConfig = {
@@ -15,34 +15,43 @@ const chartConfig = {
 };
 
 
-const LinearChartStats = ({ messagesChart }) => {
+const PieChartStats = ({ stats }) => {
     const screenWidth = Dimensions.get("window").width;
+    const data = [
+        {
+            name: "Groups",
+            population: stats?.totalChats,
+            color: "rgba(131, 167, 234, 1)",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        },
+        {
+            name: "Users",
+            population: stats?.totalUsers,
+            color: "#F00",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 15
+        }
+    ];
     return (
         <Surface style={styles.container}>
-            <LineChart
-                data={{
-                    labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
-                    datasets: [
-                        {
-                            data: [2, 54, 6, 8, 8, 9, 67]
-                        }
-                    ]
-                }}
-                width={screenWidth - 20} // from react-native
-                height={220}
-                yAxisInterval={10} // optional, defaults to 1
+            <PieChart
+                data={data}
+                width={screenWidth}
+                height={200}
                 chartConfig={chartConfig}
-                bezier
-                style={{
-                    borderRadius: 5
-                }}
+                accessor={"population"}
+                backgroundColor={"transparent"}
+                paddingLeft={"15"}
+                center={[10, 50]}
+                absolute
             />
-            <Text style={styles.title}>Total Messages</Text>
+            <Text style={styles.title}>Total Users and Groups</Text>
         </Surface>
     )
 }
 
-export default LinearChartStats
+export default PieChartStats
 
 const styles = StyleSheet.create({
     container: {
